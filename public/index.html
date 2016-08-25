@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Socket.IO chat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="keywords" content="kostadinov, tomas, webdesign, webdesigner, design, html, css, responsive" />
+  <meta name="rights" content="Tomas Kostadinov">
+  <meta name="author" content="Tomas Kostadinov" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <script src="/assets/js/push.js"></script>
+  <script src="/assets/js/socket.io.js"></script>
+</head>
+
+<body>
+  <script>
+  var socket = io('http://localhost:3000');
+  socket.on('notification', function (data) {
+    var json = JSON.parse(data);
+    //var json = data;
+    var text = json.text;
+    var title = json.title;
+    var ticker = json.ticker;
+    console.log(json);
+    if(ticker != ""){
+      Push.create(String(title), {
+        body: text,
+        //icon: 'icon.png',
+        timeout: 8000,
+        onClick: function () {
+            window.focus();
+            this.close();
+        }
+    });
+    }
+    //socket.emit('my other event', { my: 'data' });
+  });
+</script>
+</body>
+
+</html>
